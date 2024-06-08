@@ -5,13 +5,13 @@ import base64
 
 @pytest.fixture
 def png_base64():
-    with open("docs_example/doc1.png", "rb") as file:
+    with open("data/doc_1.png", "rb") as file:
         return base64.b64encode(file.read()).decode('utf-8')
 
 
 @pytest.fixture
 def pdf_base64():
-    with open("docs_example/doc2.pdf", "rb") as file:
+    with open("data/doc2.pdf", "rb") as file:
         return base64.b64encode(file.read()).decode('utf-8')
 
 
