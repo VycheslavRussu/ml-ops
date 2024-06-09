@@ -27,5 +27,5 @@ def test_create_dataset(file_path):
     return ocr_score
 
 
-FILE_PATH = "/Users/vycheslav/PycharmProjects/ml-ops/data/data.csv"
-print(test_create_dataset(FILE_PATH))
+FILE_PATH = "data/data.csv"
+print(f"Точность модели: {test_create_dataset(FILE_PATH)}%")
