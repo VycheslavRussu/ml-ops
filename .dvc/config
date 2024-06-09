@@ -1,2 +1,6 @@
+[core]
+    remote = myremote
 ['remote "remote"']
+    url = gdrive://1yBsy1bq4VKqiQIVVrkM8HGXPceOfbee0/dvcstore
+['remote "myremote"']
     url = gdrive://1yBsy1bq4VKqiQIVVrkM8HGXPceOfbee0/dvcstore
