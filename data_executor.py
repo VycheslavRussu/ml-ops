@@ -10,9 +10,9 @@ def encode_to_base64(file_path):
     Return: base64 string with input file
     """
     with open(file_path, "rb") as file:
-        binary_data = file.read()
-        base64_data = base64.b64encode(binary_data)
-    return base64_data
+        base64_bytes = base64.b64encode(file.read())
+        base64_string = base64_bytes.decode("utf-8")
+    return base64_string
 
 
 def get_files_from(folder):
@@ -53,7 +53,15 @@ def create_dataset(folder):
         extension = file.split(".")[-1]
         file_in_base64 = encode_to_base64(file_path)
         original_text = get_text_from(folder + "/" + name + "-baseline" + ".txt")
-        list_of_dicts.append({"name": name, "file_path": file_path, "extension": extension, "base64": file_in_base64, "original_text": original_text})
+        list_of_dicts.append(
+            {
+                "name": name,
+                "file_path": file_path,
+                "extension": extension,
+                "base64": file_in_base64,
+                "original_text": original_text,
+            }
+        )
 
     df = pd.DataFrame(list_of_dicts)
     df.to_csv(folder + "/" + "data.csv", index=False)
