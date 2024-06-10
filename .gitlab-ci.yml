@@ -1,0 +1,56 @@
+stages:
+  - setup
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y python3 python3-pip
+  - pip3 install --upgrade pip
+
+setup:
+  stage: setup
+  script:
+    - pip install -r requirements.txt
+    - apt-get install -y dvc
+    - dvc pull
+
+test:
+  stage: test
+  script:
+    - pytest test_*
+    - python scripts/check_data_quality.py
+
+build:
+  stage: build
+  script:
+    - docker build -t my_ml_app:latest .
+  artifacts:
+    paths:
+      - docker_image.tar
+  after_script:
+    - docker save my_ml_app:latest -o docker_image.tar
+
+deploy:
+  stage: deploy
+  script:
+    - docker load -i docker_image.tar
+    - docker tag my_ml_app:latest registry.gitlab.com/ml_ops1663223/ml-ops:latest
+    - docker push registry.gitlab.com/ml_ops1663223/ml-ops:latest
+  only:
+    - main
+
+cache:
+  paths:
+    - .cache/pip
+    - .dvc/cache
+
+services:
+  - docker:dind
+
+image: docker:latest
+
